@@ -12,7 +12,7 @@ const SideBar = () => {
                         sideBarList.map(item => {
                             return(
                                 // <Link to="/" key={item}>{item}</Link>
-                                <li className="font-semibold">{item}</li>
+                                <li key={item} className="font-semibold">{item}</li>
                             )
                         })
                     }

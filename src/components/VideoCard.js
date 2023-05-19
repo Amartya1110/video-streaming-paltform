@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom"
 
 const VideoCard = (props) => {
-    console.log(props)
+    // console.log(props)
     return(
         <Link to={"/watch?v=" + props?.id}>
             <div className="max-w-[300px] mx-3 mb-8 pb-2 hover:bg-gray-100 hover:shadow-lg">
