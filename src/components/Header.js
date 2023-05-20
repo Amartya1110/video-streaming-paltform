@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { useEffect, useState } from "react"
 
 const Header = () => {
+    const [isSuggestionBoxVisible, setIsSuggestionBoxVisible] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [suggestionList, setSuggestionList] = useState([])
     const dispatch = useDispatch()
@@ -50,6 +51,8 @@ const Header = () => {
                         placeholder="Search" 
                         value={searchQuery}
                         onChange={(e) => {setSearchQuery(e.target.value)}}
+                        onFocus={() => {setIsSuggestionBoxVisible(true)}}
+                        onBlur={() => {setIsSuggestionBoxVisible(false)}}
                     />
                     <button className="bg-gray-100 hover:bg-gray-200 border-2 rounded-r-full px-4 py-2 w-1/12">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 m-auto">
@@ -58,7 +61,7 @@ const Header = () => {
                     </button>
                 </div>
                 {
-                    (suggestionList?.length === 0) ? null : (
+                    (suggestionList?.length === 0 || (!isSuggestionBoxVisible)) ? null : (
                         <div className="mt-2 w-7/12 absolute left-1/2 -translate-x-2/4 bg-white py-3 rounded-lg">
                             {
                                 suggestionList?.map(suggestion => {
