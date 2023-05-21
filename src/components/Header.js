@@ -1,19 +1,31 @@
 import { toggle } from "../utils/features/appSlice"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useEffect, useState } from "react"
+import { addToSuggestionCache } from "../utils/features/suggestionCacheSlice"
 
 const Header = () => {
     const [isSuggestionBoxVisible, setIsSuggestionBoxVisible] = useState(false)
     const [searchQuery, setSearchQuery] = useState("")
     const [suggestionList, setSuggestionList] = useState([])
     const dispatch = useDispatch()
+
+    // Subscribe to the SuggestionCache inside Redux Store
+    const suggestionCache = useSelector(store => store?.suggestionCache)
+
     function toggleSideBar() {
         dispatch(toggle())
     }
 
     useEffect(() => {
         const timerID = setTimeout(() => {
-            getSuggestionList()
+            // if the serachquery is already there in the suggestionCache, 
+            // then don't call getSuggestionList() function and set the "suggestionList" to the list already existing in the cache
+            if(suggestionCache[searchQuery]){
+                setSuggestionList(suggestionCache[searchQuery])
+            }
+            else {
+                getSuggestionList()
+            }
         },200)
         // console.log(timerID)
 
@@ -27,6 +39,9 @@ const Header = () => {
     async function getSuggestionList() {
         const responseObj = await fetch("http://suggestqueries.google.com/complete/search?client=firefox&q=" + searchQuery)
         const jsonData = await responseObj.json()
+        dispatch(addToSuggestionCache({
+            [searchQuery]: jsonData[1]
+        }))
         setSuggestionList(jsonData[1])
     }
 
