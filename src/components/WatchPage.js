@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSearchParams } from "react-router-dom"
+import comments from "../utils/commentsData";
 import { collapseSideBar } from "../utils/features/appSlice";
+import CommentsContainer from "./CommentsContainer";
 
 const WatchPage = () => {
     let [searchParams, setSearchParams] = useSearchParams();
@@ -14,15 +16,21 @@ const WatchPage = () => {
     })
 
     return(
-        <div className="px-8">
-            <iframe 
-                width="812" 
-                height="457" 
-                src={"https://www.youtube.com/embed/" + searchParams.get("v")} 
-                frameBorder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowFullScreen
-            ></iframe>
+        <div className="pl-8 max-w-[70%]">
+            <div className="mb-10">
+                <iframe 
+                    className="w-full"
+                    height="457" 
+                    src={"https://www.youtube.com/embed/" + searchParams.get("v")} 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowFullScreen
+                ></iframe>
+            </div>
+            <div>
+                <h1 className="text-2xl mb-6">Comments</h1>
+                <CommentsContainer comments={comments} />
+            </div>
         </div>
     )
 }
